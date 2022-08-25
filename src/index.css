@@ -56,3 +56,9 @@ code {
     left: var(--horizontalSpace);
     transform: translateY(-50%)
 }
+
+
+
+.react-flow__edge-path:hover + foreignObject button {
+    background-color: yellow;
+}

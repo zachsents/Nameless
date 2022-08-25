@@ -6,6 +6,7 @@ import { createPrimitiveNode, Primitive } from "../nodes/primitives";
 import { createStateNode, State } from "../nodes/states";
 import { createTransformNode, Transform } from "../nodes/transforms";
 import { Handle, validateEdgeConnection } from "../util";
+import DeletableEdge from "./DeletableEdge";
 import Executor from "./execution/Executor";
 import ActionNode from "./nodes/ActionNode";
 import EventNode from "./nodes/EventNode";
@@ -21,6 +22,10 @@ const nodeTypes = {
     event: EventNode,
     primitive: PrimitiveNode,
     slot: SlotNode,
+}
+
+const edgeTypes = {
+    deletable: DeletableEdge
 }
 
 const initialNodes = [
@@ -54,9 +59,15 @@ export default function Flow() {
         [setEdges]
     )
 
+    const removeEdge = id => setEdges(edges => edges.filter(e => e.id != id))
+
     const onConnect = useCallback(
         connection => validateEdgeConnection(connection, edges) &&
-            setEdges(edges => addEdge(connection, edges)),
+            setEdges(edges => addEdge({
+                ...connection,
+                type: "deletable",
+                data: { remove: removeEdge }
+            }, edges)),
         [edges]
     )
 
@@ -70,6 +81,7 @@ export default function Flow() {
         <>
             <ReactFlow
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={onNodesChange}

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo } from "react"
-import { getConnectedEdges, getIncomers, useEdges } from "react-flow-renderer"
+import { useEffect } from "react"
+import { getConnectedEdges } from "react-flow-renderer"
 import { Action, NextActionHandle, TriggerProp } from "./nodes/actions"
 import { ActionHandle, Event } from "./nodes/events"
 import { SetProp, State } from "./nodes/states"
@@ -151,7 +151,7 @@ export function useExecuteTransform(node, reactFlow) {
     // TO DO: change the way this works. maybe not the best
     // to recalculate with side-effects, but instead use getter functions
     // for all values. up for debate
-    
+
     useEffect(() => {
         const calculation = transform.function(inputs)
         setNodeProps(node.id, calculation, reactFlow)
