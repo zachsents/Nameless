@@ -1,4 +1,4 @@
-import { NumberInput, TextInput } from '@mantine/core'
+import { NumberInput, Switch, TextInput } from '@mantine/core'
 import { useMemo } from 'react'
 import { Position, useReactFlow } from 'react-flow-renderer'
 import { DataType } from '../../dataTypes'
@@ -23,6 +23,8 @@ export default function PrimitiveNode({ id, data }) {
                 return <TextInput value={data.value} onChange={event => setValue(event.currentTarget.value)} />
             case Primitive.Number.id:
                 return <NumberInput value={data.value} onChange={setValue} styles={numberInputStyle} />
+            case Primitive.Boolean.id:
+                return <Switch onLabel='ON' offLabel='OFF' size='lg' checked={data.value} onChange={event => setValue(event.currentTarget.checked)} />
         }
     }, [data.primitive])
 

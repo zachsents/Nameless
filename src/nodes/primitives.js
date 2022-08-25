@@ -9,6 +9,10 @@ export const Primitive = {
         id: "String",
         name: "String",
     },
+    Boolean: {
+        id: "Boolean",
+        name: "Switch",
+    },
 }
 
 export function createPrimitiveNode({ id, name }, position = [0, 0]) {

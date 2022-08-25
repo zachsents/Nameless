@@ -30,16 +30,20 @@ const edgeTypes = {
 
 const initialNodes = [
     createTransformNode(Transform.Add),
+    createTransformNode(Transform.LowerCase),
+    createTransformNode(Transform.UpperCase),
+    createTransformNode(Transform.Mux),
     createActionNode(Action.ConsoleLog, [-100, -100]),
     createActionNode(Action.ConsoleLog, [-100, -100]),
-    createActionNode(Action.ConsoleLog, [-100, -100]),
+    createActionNode(Action.SaveToLocalStorage, [-100, -100]),
     createActionNode(Action.PassEvent, [-300, -100]),
     createStateNode(State.Simple, [100, 200]),
     createEventNode(Event.OnStateChange, [200, 200]),
     createEventNode(Event.OnStateChange, [-200, 200]),
     createPrimitiveNode(Primitive.Number, [200, 400]),
     createPrimitiveNode(Primitive.Number, [200, 400]),
-    createPrimitiveNode(Primitive.Number, [200, 500]),
+    createPrimitiveNode(Primitive.String, [200, 500]),
+    createPrimitiveNode(Primitive.Boolean, [200, 500]),
 ]
 
 const initialEdges = []

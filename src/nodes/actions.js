@@ -19,6 +19,15 @@ export const Action = {
             nextAction(value)
         },
         chainable: true,
+    },
+    SaveToLocalStorage: {
+        id: "SaveToLocalStorage",
+        name: "Save to Local Storage",
+        inputs: ["key"],
+        function: (_, { key }) => {
+            key && localStorage.setItem(key, _)
+        },
+        chainable: false,
     }
 }
 
