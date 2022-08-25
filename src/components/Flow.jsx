@@ -44,6 +44,7 @@ const initialNodes = [
     createPrimitiveNode(Primitive.Number, [200, 400]),
     createPrimitiveNode(Primitive.String, [200, 500]),
     createPrimitiveNode(Primitive.Boolean, [200, 500]),
+    createPrimitiveNode(Primitive.Image, [200, 500]),
 ]
 
 const initialEdges = []

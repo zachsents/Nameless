@@ -1,4 +1,4 @@
-import { NumberInput, Switch, TextInput } from '@mantine/core'
+import { Image, NumberInput, Stack, Switch, TextInput } from '@mantine/core'
 import { useMemo } from 'react'
 import { Position, useReactFlow } from 'react-flow-renderer'
 import { DataType } from '../../dataTypes'
@@ -14,19 +14,25 @@ export default function PrimitiveNode({ id, data }) {
     const reactFlow = useReactFlow()
 
     // callback for setting the value in the store
+    const value = data[handleName]
     const setValue = newValue => setNodeProp(id, handleName, newValue, reactFlow)
 
     // determine input component from type -- memoized
     const inputComponent = useMemo(() => {
         switch (data.primitive) {
             case Primitive.String.id:
-                return <TextInput value={data.value} onChange={event => setValue(event.currentTarget.value)} />
+                return <TextInput value={value ?? ""} onChange={event => setValue(event.currentTarget.value)} />
             case Primitive.Number.id:
-                return <NumberInput value={data.value} onChange={setValue} styles={numberInputStyle} />
+                return <NumberInput value={value ?? 0} onChange={setValue} styles={numberInputStyle} />
             case Primitive.Boolean.id:
-                return <Switch onLabel='ON' offLabel='OFF' size='lg' checked={data.value} onChange={event => setValue(event.currentTarget.checked)} />
+                return <Switch checked={value ?? false} onLabel='ON' offLabel='OFF' size='lg' onChange={event => setValue(event.currentTarget.checked)} />
+            case Primitive.Image.id:
+                return <Stack sx={{ width: 200 }} >
+                    <Image src={value} withPlaceholder />
+                    <TextInput onChange={event => setValue(event.currentTarget.value)} />
+                </Stack>
         }
-    }, [data.primitive])
+    }, [value])
 
     return (
         <>

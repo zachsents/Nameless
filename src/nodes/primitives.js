@@ -13,6 +13,10 @@ export const Primitive = {
         id: "Boolean",
         name: "Switch",
     },
+    Image: {
+        id: "Image",
+        name: "Image",
+    }
 }
 
 export function createPrimitiveNode({ id, name }, position = [0, 0]) {
