@@ -4,9 +4,9 @@ import { Action, NextActionHandle, TriggerProp } from '../../nodes/actions'
 import HandleGroup from './HandleGroup'
 import NodeInner from './NodeInner'
 
-export default function ActionNode({ data }) {
+export default function ActionNode(props) {
 
-    const { inputs, chainable } = Action[data.action]
+    const { inputs, chainable } = Action[props.data.action]
 
     return (
         <>
@@ -31,7 +31,7 @@ export default function ActionNode({ data }) {
                     handles={[NextActionHandle]}
                     hideLabel
                 />}
-            <NodeInner label={data.label} typeLabel="Action" />
+            <NodeInner label={props.data.label} typeLabel="Action" {...props} />
         </>
     )
 }

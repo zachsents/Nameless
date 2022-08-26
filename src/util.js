@@ -38,6 +38,10 @@ export function setNodeProp(nodeId, propName, propValue, reactFlow) {
     }, reactFlow)
 }
 
+export function removeNode(nodeId, reactFlow) {
+    reactFlow.setNodes(nodes => nodes.filter(node => node.id != nodeId))
+}
+
 export function getInputValues(node, reactFlow, supplementalKeys = []) {
     return Object.fromEntries([
         ...supplementalKeys.map(key => [key, undefined]),

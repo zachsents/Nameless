@@ -5,7 +5,6 @@ import { useExecuteAction, useExecuteEvent, useExecuteState, useExecuteTransform
 
 export default function Executor({ nodes, edges }) {
 
-    const ed = useEdges()
     const reactFlow = useReactFlow()
 
     // set up logging state
@@ -44,25 +43,6 @@ export default function Executor({ nodes, edges }) {
             useExecuteEvent(node, reactFlow)
         })
 
-    return (
-        <Stack sx={containerStyle}>
-            <Group position="right">
-                <Button id="special" sx={buttonStyle}>Special</Button>
-            </Group>
-            {/* <Console logs={logs} /> */}
-        </Stack>
-    )
+    return <></>
 }
 
-const buttonStyle = theme => ({
-    pointerEvents: "auto"
-})
-
-const containerStyle = theme => ({
-    position: "absolute",
-    top: 10,
-    right: 10,
-    width: 300,
-    zIndex: 100,
-    pointerEvents: "none",
-})

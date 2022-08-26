@@ -4,9 +4,9 @@ import { ActionHandle, Event } from '../../nodes/events'
 import HandleGroup from './HandleGroup'
 import NodeInner from './NodeInner'
 
-export default function EventNode({ data }) {
+export default function EventNode(props) {
 
-    const { inputs } = Event[data.event]
+    const { inputs } = Event[props.data.event]
 
     return (
         <>
@@ -22,7 +22,7 @@ export default function EventNode({ data }) {
                 type="source"
                 handles={[ActionHandle]}
             />
-            <NodeInner label={data.label} typeLabel="Event" />
+            <NodeInner label={props.data.label} typeLabel="Event" {...props} />
         </>
     )
 }

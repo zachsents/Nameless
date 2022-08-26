@@ -7,19 +7,19 @@ import { useCallback, useState } from "react"
 import { setNodeProp } from "../../util"
 import { SetProp } from "../../nodes/states"
 
-export default function StateNode({ id, data }) {
+export default function StateNode(props) {
 
     const reactFlow = useReactFlow()
 
-    const setName = newName => setNodeProp(id, "name", newName, reactFlow)
+    const setName = newName => setNodeProp(props.id, "name", newName, reactFlow)
 
     const nameInputStyles = useCallback(theme => ({
         input: {
             textAlign: "center",
             minWidth: 50,
-            width: `calc(20px + ${data.name?.length ?? 0}ch)`,
+            width: `calc(20px + ${props.data.name?.length ?? 0}ch)`,
         }
-    }), [data.name])
+    }), [props.data.name])
 
     return (
         <>
@@ -42,16 +42,16 @@ export default function StateNode({ id, data }) {
                 handles={[SetProp]}
             />
 
-            <NodeInner typeLabel={data.label}>
+            <NodeInner typeLabel={props.data.label} {...props}>
                 <TextInput
                     autoFocus={true}
                     variant="unstyled"
                     placeholder="State"
-                    value={data.name || ""}
+                    value={props.data.name || ""}
                     onChange={event => setName(event.currentTarget.value)}
                     styles={nameInputStyles}
                 />
-                <Text size={8} align="center" mt={-10}>{data.current}</Text>
+                <Text size={8} align="center" mt={-10}>{props.data.current}</Text>
             </NodeInner>
         </>
     )

@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import ReactFlow, { addEdge, applyEdgeChanges, applyNodeChanges, Controls, MiniMap, updateEdge } from "react-flow-renderer"
+import ReactFlow, { addEdge, applyEdgeChanges, applyNodeChanges, Controls, MiniMap, updateEdge, useStore } from "react-flow-renderer"
 import { Action, createActionNode } from "../nodes/actions";
 import { createEventNode, Event } from "../nodes/events";
 import { createPrimitiveNode, Primitive } from "../nodes/primitives";
@@ -7,6 +7,7 @@ import { createStateNode, State } from "../nodes/states";
 import { createTransformNode, Transform } from "../nodes/transforms";
 import { Handle, validateEdgeConnection } from "../util";
 import DeletableEdge from "./DeletableEdge";
+import Execution from "./execution/Execution";
 import Executor from "./execution/Executor";
 import ActionNode from "./nodes/ActionNode";
 import EventNode from "./nodes/EventNode";
@@ -71,7 +72,7 @@ export default function Flow() {
             setEdges(edges => addEdge({
                 ...connection,
                 type: "deletable",
-                data: { remove: removeEdge }
+                data: { _remove: removeEdge }
             }, edges)),
         [edges]
     )
@@ -97,7 +98,7 @@ export default function Flow() {
             >
                 <MiniMap />
                 <Controls />
-                <Executor nodes={nodes} edges={edges} />
+                <Execution />
             </ReactFlow>
         </>
     )

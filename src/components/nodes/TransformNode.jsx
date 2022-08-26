@@ -4,9 +4,9 @@ import { Transform } from '../../nodes/transforms'
 import HandleGroup from './HandleGroup'
 import NodeInner from './NodeInner'
 
-export default function TransformNode({ data }) {
+export default function TransformNode(props) {
 
-    const { inputs, outputs } = Transform[data.transform]
+    const { inputs, outputs } = Transform[props.data.transform]
 
     return (
         <>
@@ -22,7 +22,7 @@ export default function TransformNode({ data }) {
                 type="source"
                 handles={outputs}
             />
-            <NodeInner label={data.label} typeLabel="Transform" />
+            <NodeInner label={props.data.label} typeLabel="Transform" {...props} />
         </>
     )
 }

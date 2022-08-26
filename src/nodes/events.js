@@ -14,16 +14,6 @@ export const Event = {
             }, [input])
         },
     },
-    OnSpecialButtonClick: {
-        id: "OnSpecialButtonClick",
-        name: "on special button click",
-        inputs: [],
-        listen: fire => {
-            const specialButton = document.getElementById("special")
-            specialButton?.addEventListener("click", fire)
-            return () => specialButton?.removeEventListener("click", fire)
-        },
-    }
 }
 
 export function createEventNode({ id, name }, position = [0, 0]) {

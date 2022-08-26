@@ -57,7 +57,7 @@ export default function DeletableEdge({
                         color="red"
                         size="sm"
                         sx={buttonStyle}
-                        onClick={() => data?.remove(id)}
+                        onClick={() => data?._remove(id)}
                     />
                 </Center>
             </foreignObject>

@@ -9,17 +9,17 @@ import NodeInner from './NodeInner'
 
 const handleName = " "
 
-export default function PrimitiveNode({ id, data }) {
+export default function PrimitiveNode(props) {
 
     const reactFlow = useReactFlow()
 
     // callback for setting the value in the store
-    const value = data[handleName]
-    const setValue = newValue => setNodeProp(id, handleName, newValue, reactFlow)
+    const value = props.data[handleName]
+    const setValue = newValue => setNodeProp(props.id, handleName, newValue, reactFlow)
 
     // determine input component from type -- memoized
     const inputComponent = useMemo(() => {
-        switch (data.primitive) {
+        switch (props.data.primitive) {
             case Primitive.String.id:
                 return <TextInput value={value ?? ""} onChange={event => setValue(event.currentTarget.value)} />
             case Primitive.Number.id:
@@ -42,7 +42,7 @@ export default function PrimitiveNode({ id, data }) {
                 type="source"
                 handles={[handleName]}
             />
-            <NodeInner typeLabel={data.label}>
+            <NodeInner typeLabel={props.data.label} {...props}>
                 {inputComponent}
             </NodeInner>
         </>
