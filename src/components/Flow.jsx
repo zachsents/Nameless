@@ -15,6 +15,7 @@ import PrimitiveNode from "./nodes/PrimitiveNode";
 import SlotNode from "./nodes/SlotNode";
 import StateNode from './nodes/StateNode';
 import TransformNode from "./nodes/TransformNode";
+import Search from "./search/Search";
 
 const nodeTypes = {
     state: StateNode,
@@ -29,25 +30,7 @@ const edgeTypes = {
     deletable: DeletableEdge
 }
 
-const initialNodes = [
-    createTransformNode(Transform.Add),
-    createTransformNode(Transform.LowerCase),
-    createTransformNode(Transform.UpperCase),
-    createTransformNode(Transform.Mux),
-    createActionNode(Action.ConsoleLog, [-100, -100]),
-    createActionNode(Action.ConsoleLog, [-100, -100]),
-    createActionNode(Action.SaveToLocalStorage, [-100, -100]),
-    createActionNode(Action.PassEvent, [-300, -100]),
-    createStateNode(State.Simple, [100, 200]),
-    createEventNode(Event.OnStateChange, [200, 200]),
-    createEventNode(Event.OnStateChange, [-200, 200]),
-    createPrimitiveNode(Primitive.Number, [200, 400]),
-    createPrimitiveNode(Primitive.Number, [200, 400]),
-    createPrimitiveNode(Primitive.String, [200, 500]),
-    createPrimitiveNode(Primitive.Boolean, [200, 500]),
-    createPrimitiveNode(Primitive.Image, [200, 500]),
-]
-
+const initialNodes = []
 const initialEdges = []
 
 export default function Flow() {
@@ -99,6 +82,7 @@ export default function Flow() {
                 <MiniMap />
                 <Controls />
                 <Execution />
+                <Search />
             </ReactFlow>
         </>
     )

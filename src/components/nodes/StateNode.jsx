@@ -1,4 +1,4 @@
-import { Position, useReactFlow } from "react-flow-renderer"
+import { Position, useEdges, useNodes, useReactFlow } from "react-flow-renderer"
 import HandleGroup from './HandleGroup'
 import NodeInner from './NodeInner'
 import { DataType } from "../../dataTypes"
@@ -6,6 +6,7 @@ import { Text, TextInput } from "@mantine/core"
 import { useCallback, useState } from "react"
 import { setNodeProp } from "../../util"
 import { SetProp } from "../../nodes/states"
+import { useExecuteState } from "../../execution/hooks"
 
 export default function StateNode(props) {
 
@@ -20,6 +21,8 @@ export default function StateNode(props) {
             width: `calc(20px + ${props.data.name?.length ?? 0}ch)`,
         }
     }), [props.data.name])
+
+    useExecuteState(props.id)
 
     return (
         <>
@@ -53,6 +56,18 @@ export default function StateNode(props) {
                 />
                 <Text size={8} align="center" mt={-10}>{props.data.current}</Text>
             </NodeInner>
+            <ExecuteState id={props.id} />
         </>
     )
+}
+
+function ExecuteState({ id }) {
+
+    // need these to force rerender when anything changes in the graph
+    const nodes = useNodes()
+    const edges = useEdges()
+    
+    useExecuteState(id)
+
+    return <></>
 }

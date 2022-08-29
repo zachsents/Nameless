@@ -6,15 +6,18 @@ export const NextActionHandle = "nextAction"
 export const Action = {
     ConsoleLog: {
         id: "ConsoleLog",
-        name: "Console Log",
+        name: "Log",
+        description: "Prints to console.",
         inputs: [],
         function: _ => console.log(_),
         chainable: false,
     },
     PassEvent: {
         id: "PassEvent",
-        name: "⏩",
+        name: "Reassign Signal Value",
+        displayName: "⏩",
         inputs: ["value"],
+        description: "Assign a different value to an event signal.",
         function: (_, { value }, nextAction) => {
             nextAction(value)
         },
@@ -23,6 +26,7 @@ export const Action = {
     SaveToLocalStorage: {
         id: "SaveToLocalStorage",
         name: "Save to Local Storage",
+        description: "Write value to browser's local storage.",
         inputs: ["key"],
         function: (_, { key }) => {
             key && localStorage.setItem(key, _)

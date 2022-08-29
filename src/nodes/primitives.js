@@ -7,11 +7,12 @@ export const Primitive = {
     },
     String: {
         id: "String",
-        name: "String",
+        name: "Text",
     },
     Boolean: {
         id: "Boolean",
         name: "Switch",
+        description: "Boolean -- true / false"
     },
     Image: {
         id: "Image",

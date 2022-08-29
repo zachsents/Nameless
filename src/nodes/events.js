@@ -1,3 +1,4 @@
+import { useInterval } from "@mantine/hooks"
 import { useEffect } from "react"
 import shortUUID from "short-uuid"
 
@@ -6,12 +7,27 @@ export const ActionHandle = "action"
 export const Event = {
     OnStateChange: {
         id: "OnStateChange",
-        name: "when variable changes",
+        name: "When variable changes",
+        description: "Detect changes in a value.",
         inputs: ["input"],
         useListen: (fire, { input }) => {
             useEffect(() => {
                 fire(input)
             }, [input])
+        },
+    },
+    OnInterval: {
+        id: "OnInterval",
+        name: "Interval",
+        description: "Periodically fires.",
+        inputs: ["period"],
+        useListen: (fire, { period }) => {
+            const interval = useInterval(() => fire(), period)
+
+            useEffect(() => {
+                interval.start()
+                return interval.stop
+            }, [period])
         },
     },
 }
