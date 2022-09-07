@@ -1,42 +1,27 @@
-import { useCallback, useState } from "react";
-import ReactFlow, { addEdge, applyEdgeChanges, applyNodeChanges, Controls, MiniMap, updateEdge, useStore } from "react-flow-renderer"
-import { Action, createActionNode } from "../nodes/actions";
-import { createEventNode, Event } from "../nodes/events";
-import { createPrimitiveNode, Primitive } from "../nodes/primitives";
-import { createStateNode, State } from "../nodes/states";
-import { createTransformNode, Transform } from "../nodes/transforms";
-import { Handle, validateEdgeConnection } from "../util";
-import DeletableEdge from "./DeletableEdge";
-import Execution from "./execution/Execution";
-import Executor from "./execution/Executor";
-import ActionNode from "./nodes/ActionNode";
-import EventNode from "./nodes/EventNode";
-import PrimitiveNode from "./nodes/PrimitiveNode";
-import SlotNode from "./nodes/SlotNode";
-import StateNode from './nodes/StateNode';
-import TransformNode from "./nodes/TransformNode";
-import Search from "./search/Search";
+import { useCallback, useState } from "react"
+import ReactFlow, { addEdge, applyEdgeChanges, applyNodeChanges, Controls, MiniMap, updateEdge } from "react-flow-renderer"
+import { validateEdgeConnection } from "../util"
+import DeletableEdge from "./DeletableEdge"
+import Search from "./search/Search"
 
-const nodeTypes = {
-    state: StateNode,
-    transform: TransformNode,
-    action: ActionNode,
-    event: EventNode,
-    primitive: PrimitiveNode,
-    slot: SlotNode,
-}
+import { NodeTypes } from "../../../exec-vanilla"
+import Node from "./nodes/Node"
+import Execution from "./execution/Execution"
+
+
+const nodeTypes = Object.fromEntries(
+    Object.keys(NodeTypes).map(type => [ type, Node ])
+)
 
 const edgeTypes = {
     deletable: DeletableEdge
 }
 
-const initialNodes = []
-const initialEdges = []
 
 export default function Flow() {
 
-    const [nodes, setNodes] = useState(initialNodes)
-    const [edges, setEdges] = useState(initialEdges)
+    const [nodes, setNodes] = useState([])
+    const [edges, setEdges] = useState([])
 
     const onNodesChange = useCallback(
         changes => setNodes(nodes => applyNodeChanges(changes, nodes)),
@@ -81,8 +66,8 @@ export default function Flow() {
             >
                 <MiniMap />
                 <Controls />
-                <Execution />
                 <Search />
+                <Execution />
             </ReactFlow>
         </>
     )

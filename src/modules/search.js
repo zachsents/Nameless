@@ -1,47 +1,36 @@
 import lunr from "lunr"
-import { Action, createActionNode } from "../nodes/actions"
-import { createEventNode, Event } from "../nodes/events"
-import { createPrimitiveNode, Primitive } from "../nodes/primitives"
-import { createStateNode, State } from "../nodes/states"
-import { createTransformNode, Transform } from "../nodes/transforms"
+import { createNode } from "./nodes"
+import { NodeTypes } from "../../../exec-vanilla"
 
-const docs = {
-    ...prepDocumentsForSearch(Action, "action", createActionNode),
-    ...prepDocumentsForSearch(Event, "event", createEventNode),
-    ...prepDocumentsForSearch(Primitive, "primitive", createPrimitiveNode),
-    ...prepDocumentsForSearch(State, "state", createStateNode),
-    ...prepDocumentsForSearch(Transform, "transform", createTransformNode),
-}
+const docs = prepDocumentsForSearch(NodeTypes, createNode)
 
 const searchIndex = lunr(function () {
-    this.ref("_ref")
+    this.ref("id")
     this.field("name")
     this.field("description")
+    this.field("_mainCategory", { boost: 10 })
     this.field("_categories")
-    this.field("_type", { boost: 10 })
 
     this.metadataWhitelist = ['position']
 
     Object.values(docs).forEach(doc => this.add(doc))
 })
 
-function prepDocumentsForSearch(collection, _type, _create) {
+
+function prepDocumentsForSearch(collection, _create) {
     return Object.fromEntries(
-        Object.entries(collection).map(([id, item]) => {
-            const _ref = `${_type}/${id}`
-            return [
-                _ref,
-                {
-                    ...item,
-                    _ref,
-                    _type,
-                    _create,
-                    _categories: item.categories?.join(" "),
-                }
-            ]
-        })
+        Object.values(collection).map(item => [
+            item.id,
+            {
+                ...item,
+                _create,
+                _mainCategory: item.categories?.[0] ?? "",
+                _categories: item.categories?.join(" "),
+            }
+        ])
     )
 }
+
 
 export default {
     search: query => searchIndex.search(query.trim() + "*")

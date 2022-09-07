@@ -1,25 +1,24 @@
 import { Stack, Group, useMantineTheme, Box } from '@mantine/core'
-import React from 'react'
 import { Handle, Position } from 'react-flow-renderer'
 import { DataType } from '../../dataTypes'
-import * as nodeStyles from "./nodeStyles"
 
-export default function HandleGroup({ position, dataType, type, handles, hideLabel }) {
+
+export default function HandleGroup({ position, type, handles, hideLabel }) {
 
     const theme = useMantineTheme()
 
-    const handleStyle =
-        dataType == DataType.Value ? nodeStyles.valueHandle(theme) :
-            dataType == DataType.Signal ? nodeStyles.actionHandle(theme) : {}
+    const handleStyle = dataType =>
+        dataType == DataType.Value ? valueHandleStyle(theme) :
+            dataType == DataType.Signal ? signalHandleStyle(theme) : {}
 
-    const handleComponents = handles?.map(handle =>
-        <Box sx={handleWrapperStyle} key={handle}>
+    const handleComponents = handles?.map(({ name, dataType }, i) =>
+        <Box sx={handleWrapperStyle} key={i}>
             <Handle
                 type={type}
-                id={`<${dataType}>${handle}`}
+                id={`<${dataType}>${name}`}
                 position={position}
-                data-label={hideLabel ? "" : handle}
-                style={handleStyle}
+                data-label={hideLabel ? "" : name}
+                style={handleStyle(dataType)}
             />
         </Box>
     )
@@ -34,6 +33,14 @@ export default function HandleGroup({ position, dataType, type, handles, hideLab
             </Group>
     )
 }
+
+const valueHandleStyle = theme => ({
+    background: theme.colors.dark[3],
+})
+
+const signalHandleStyle = theme => ({
+    background: theme.colors.red[6],
+})
 
 const handleOffset = 16
 const hoverPadding = 10
@@ -59,7 +66,7 @@ const groupStyle = position => theme => ({
 })
 
 const handleWrapperStyle = {
-    
+
     padding: hoverPadding,
     borderRadius: '100%',
     "&:hover .react-flow__handle": {

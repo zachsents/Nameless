@@ -1,12 +1,13 @@
 import { ActionIcon, Box, ColorSwatch, Group, HoverCard, Popover, Text, Tooltip, useMantineTheme } from '@mantine/core'
-import React, { useState } from 'react'
-import * as nodeStyles from "./nodeStyles"
-
+import { useState } from 'react'
 import { CgTrash } from "react-icons/cg"
 import { removeNode } from '../../util'
 import { useReactFlow } from 'react-flow-renderer'
 
-export default function NodeInner({ label, typeLabel, children, selected, id }) {
+
+export default function NodeInner(props) {
+
+    const { label, typeLabel, id, displayOverride: DisplayOverride } = props
 
     const reactFlow = useReactFlow()
     const theme = useMantineTheme()
@@ -17,8 +18,10 @@ export default function NodeInner({ label, typeLabel, children, selected, id }) 
         <HoverCard transition="scale" transitionDuration={100} position="top" zIndex={1000}>
             <HoverCard.Target>
                 <Box sx={boxStyle(color)}>
-                    <Text size={8} sx={nodeStyles.typeLabel}>{typeLabel}</Text>
-                    {children || <Text align='center'>{label}</Text>}
+                    <Text size={8} sx={typeLabelStyle}>{typeLabel}</Text>
+                    {DisplayOverride ?
+                        <DisplayOverride {...props} /> :
+                        <Text align='center'>{label}</Text>}
                 </Box>
             </HoverCard.Target>
             <HoverCard.Dropdown>
@@ -30,11 +33,11 @@ export default function NodeInner({ label, typeLabel, children, selected, id }) 
                         <Popover.Dropdown>
                             <Group position="center">
                                 {["white", ...Object.keys(theme.colors).slice(1)].map(color => (
-                                    <ColorSwatch 
-                                    color={theme.colors[color]?.[5] || color} 
-                                    onClick={() => setColor(color)}
-                                    sx={swatchStyle} 
-                                    key={color} 
+                                    <ColorSwatch
+                                        color={theme.colors[color]?.[5] || color}
+                                        onClick={() => setColor(color)}
+                                        sx={swatchStyle}
+                                        key={color}
                                     />
                                 ))}
                             </Group>
@@ -48,6 +51,14 @@ export default function NodeInner({ label, typeLabel, children, selected, id }) 
         </HoverCard>
     )
 }
+
+const typeLabelStyle = theme => ({
+    position: 'absolute',
+    top: 0,
+    left: '50%',
+    transform: 'translate(-50%, -100%)',
+    textTransform: "capitalize",
+})
 
 const popoverStyles = theme => ({
     dropdown: {

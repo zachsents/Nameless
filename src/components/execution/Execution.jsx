@@ -1,53 +1,62 @@
-import { Button, Group, Stack } from '@mantine/core'
-import { useListState } from "@mantine/hooks"
-import { useEdges, useNodes, useReactFlow } from 'react-flow-renderer'
-import { useExecutionStore } from '../../execution/store'
-import Executor from './Executor'
-import Console from "./Console"
-
-import { CgPlayButton, CgPlayStop } from "react-icons/cg"
+import { Stack } from '@mantine/core'
+import { useDebouncedValue } from '@mantine/hooks'
 import { useEffect } from 'react'
+import { useEdges, useNodes } from 'react-flow-renderer'
+import { useExecutionStore } from '../../execution/store'
 
 export default function Execution() {
+
+    // listen to changes on nodes and edges
+    const nodes = useNodes()
+    const edges = useEdges()
+
+    // memoize the info we need and package it up for the worker
+    const workerMessage = {
+        nodes: nodes.map(node => ({
+            id: node.id,
+            type: node.type,
+            state: node.data?.state
+        })),
+        edges: edges.map(edge => ({
+            source: edge.source,
+            sourceHandle: edge.sourceHandle,
+            target: edge.target,
+            targetHandle: edge.targetHandle
+        }))
+    }
+
+    // debounce worker message to use as dep for effect
+    const [debouncedWorkerMessage] = useDebouncedValue(JSON.stringify(workerMessage), 300)
+
+    // start a worker when changes to the graph are made
+    useEffect(() => {
+        if (nodes.length > 0) {
+
+            // start worker
+            const worker = new Worker(new URL('../../modules/execution.js', import.meta.url), {
+                type: "module"
+            })
+
+            // send necessary info from nodes and edges
+            worker.postMessage(workerMessage)
+
+            return () => worker.terminate()
+        }
+    }, [debouncedWorkerMessage])
 
     // set up logging state
     const logs = useExecutionStore(store => store.logs)
     const log = useExecutionStore(store => store.log)
     const logWithTimestamp = message => log(`${new Date().toLocaleTimeString()} > ${message}`)
 
-    // useEffect(() => {
-    //     // executionStore.running && reactFlow.fitView({ padding: 0.5 })
-    // }, [executionStore.running])
-
     return (
         <>
             <Stack sx={containerStyle}>
-                {/* <Group position="right">
-                    {executionStore.running ?
-                        <Button
-                            onClick={executionStore.stopRunning}
-                            color="red"
-                            sx={buttonStyle}
-                        >
-                            <CgPlayStop />
-                        </Button> :
-                        <Button
-                            onClick={executionStore.startRunning}
-                            color="green"
-                            sx={buttonStyle}>
-                            <CgPlayButton />
-                        </Button>}
-                </Group> */}
                 {/* <Console logs={logs || []} /> */}
             </Stack>
         </>
     )
 }
-
-const buttonStyle = theme => ({
-    pointerEvents: "auto",
-    fontSize: 32,
-})
 
 const containerStyle = theme => ({
     position: "absolute",

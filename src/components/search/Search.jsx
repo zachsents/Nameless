@@ -74,7 +74,6 @@ export default function Search() {
                                         <SearchItem
                                             name={item.name}
                                             badges={<>
-                                                <Badge color={badgeColorMap[item._type]}>{item._type}</Badge>
                                                 {item.categories?.map(cat =>
                                                     <Badge key={cat}>{cat}</Badge>
                                                 )}

@@ -1,4 +1,5 @@
-import { getConnectedEdges } from "react-flow-renderer"
+import { useEffect, useMemo } from "react"
+import { applyEdgeChanges, getConnectedEdges, useReactFlow } from "react-flow-renderer"
 
 
 export function validateEdgeConnection(connection, edges) {
@@ -7,21 +8,49 @@ export function validateEdgeConnection(connection, edges) {
     const targetHandle = new Handle(connection.targetHandle)
     const sameDataType = sourceHandle.dataType == targetHandle.dataType
 
-    // only allow one connection to any target
-    const targetTaken = edges.some(edge =>
-        edge.target == connection.target &&
-        edge.targetHandle == connection.targetHandle
-    )
-
     // if all tests are passed, make the connection
-    return sameDataType && !targetTaken
+    return sameDataType
+}
+
+export function useNodeState(nodeId, initial = {}) {
+    const reactFlow = useReactFlow()
+
+    const state = reactFlow.getNode(nodeId).data.state
+
+    const setState = (changes, overwrite = false) => reactFlow.setNodes(nodes => nodes.map(node =>
+        node.id == nodeId ?
+            {
+                ...node,
+                data: {
+                    ...node.data,
+                    state: overwrite ? changes : {
+                        ...node.data.state,
+                        ...changes
+                    }
+                }
+            } : node
+    ))
+
+    useEffect(() => {
+        state === undefined && setState(initial, true)
+    }, [])
+
+    return [state, setState]
+}
+
+export function setNodeState(nodeId, value, reactFlow) {
+    reactFlow.setNodes(nodes => nodes.map(node => {
+        if (node.id == nodeId)
+            node.data.state = value
+        return node
+    }))
 }
 
 export function setNodeProps(nodeId, changeObject, reactFlow) {
     reactFlow.setNodes(nodes => nodes.map(node => {
         if (node.id == nodeId)
-            node.data = {
-                ...node.data,
+            node.data.state = {
+                ...node.data.state,
                 ...changeObject
             }
         return node
@@ -35,6 +64,10 @@ export function setNodeProp(nodeId, propName, propValue, reactFlow) {
 }
 
 export function removeNode(nodeId, reactFlow) {
+    const node = reactFlow.getNode(nodeId)
+    const connectedEdges = getConnectedEdges([node], reactFlow.getEdges())
+        .map(edge => edge.id)
+    reactFlow.setEdges(edges => edges.filter(edge => !connectedEdges.includes(edge.id)))
     reactFlow.setNodes(nodes => nodes.filter(node => node.id != nodeId))
 }
 
