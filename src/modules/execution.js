@@ -1,4 +1,4 @@
-import { runFlow } from "../../../exec-vanilla"
+import { runFlow } from "nameless-graph-exec"
 
 console.debug("[Execution] Worker is running")
 

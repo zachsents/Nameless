@@ -12,6 +12,7 @@
     "@mantine/core": "^5.2.3",
     "@mantine/hooks": "^5.2.3",
     "lunr": "^2.3.9",
+    "nameless-graph-exec": "github:zachsents/Nameless-Graph-Executor",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-flow-renderer": "^10.3.16",

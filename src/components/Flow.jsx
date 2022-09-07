@@ -4,7 +4,7 @@ import { validateEdgeConnection } from "../util"
 import DeletableEdge from "./DeletableEdge"
 import Search from "./search/Search"
 
-import { NodeTypes } from "../../../exec-vanilla"
+import { NodeTypes } from "nameless-graph-exec"
 import Node from "./nodes/Node"
 import Execution from "./execution/Execution"
 

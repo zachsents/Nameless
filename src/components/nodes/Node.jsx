@@ -1,4 +1,4 @@
-import { NodeTypes } from "../../../../exec-vanilla"
+import { NodeTypes } from "nameless-graph-exec"
 import { DataType } from "../../dataTypes"
 import NodeInner from "./NodeInner"
 import HandleGroup from "./HandleGroup"
