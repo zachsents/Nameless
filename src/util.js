@@ -71,6 +71,10 @@ export function removeNode(nodeId, reactFlow) {
     reactFlow.setNodes(nodes => nodes.filter(node => node.id != nodeId))
 }
 
+export function removeEdge(edgeId, reactFlow) {
+    reactFlow.setEdges(edges => edges.filter(edge => edge.id != edgeId))
+}
+
 export function getInputValues(node, reactFlow, supplementalKeys = []) {
     return Object.fromEntries([
         ...supplementalKeys.map(key => [key, undefined]),

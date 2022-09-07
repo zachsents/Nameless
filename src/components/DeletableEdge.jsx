@@ -1,5 +1,6 @@
 import { Center, CloseButton } from '@mantine/core'
-import { getBezierPath, getEdgeCenter } from 'react-flow-renderer'
+import { getBezierPath, getEdgeCenter, useReactFlow } from 'react-flow-renderer'
+import { removeEdge } from '../util'
 
 const foreignObjectSize = 34
 
@@ -34,6 +35,8 @@ export default function DeletableEdge({
         targetY,
     })    
 
+    const reactFlow = useReactFlow()
+
     return (
         <>
             <path
@@ -57,7 +60,7 @@ export default function DeletableEdge({
                         color="red"
                         size="sm"
                         sx={buttonStyle}
-                        onClick={() => data?._remove(id)}
+                        onClick={() => removeEdge(id, reactFlow)}
                     />
                 </Center>
             </foreignObject>
