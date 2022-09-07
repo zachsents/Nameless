@@ -32,7 +32,7 @@ export function useNodeState(nodeId, initial = {}) {
     ))
 
     useEffect(() => {
-        state === undefined && setState(initial, true)
+        Object.keys(state) == 0 && setState(initial, true)
     }, [])
 
     return [state || {}, setState]
