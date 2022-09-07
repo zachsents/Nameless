@@ -3,10 +3,10 @@ import { setNodeState, useNodeState } from "../../util"
 
 export function Number(props) {
 
-    const [value, setValue] = useNodeState(props.id)
+    const [value, setValue] = useNodeState(props.id, { $: 0 })
 
     return (
-        <NumberInput value={value ?? 0} onChange={val => setValue(val, true)} styles={numberInputStyle} />
+        <NumberInput value={value.$ ?? 0} onChange={val => setValue({ $: val })} styles={numberInputStyle} />
     )
 }
 

@@ -35,7 +35,7 @@ export function useNodeState(nodeId, initial = {}) {
         state === undefined && setState(initial, true)
     }, [])
 
-    return [state, setState]
+    return [state || {}, setState]
 }
 
 export function setNodeState(nodeId, value, reactFlow) {
