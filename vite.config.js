@@ -7,7 +7,8 @@ export default ({ mode }) => defineConfig({
     plugins: [react()],
     resolve: {
         alias: {
-            ...(mode == "development" && { "nameless-graph-exec": path.resolve(__dirname, "../execution") })
+            ...(mode == "development" && { "graph-execution-engine-2": path.resolve(__dirname, "../execution2") }),
+            // "firebase-nodes-plugin": path.resolve(__dirname, "../firebase")
         }
     }
 })

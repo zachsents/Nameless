@@ -1,6 +1,7 @@
 import lunr from "lunr"
 import { createNode } from "./nodes"
-import { NodeTypes } from "nameless-graph-exec"
+import NodeTypes from "./nodeTypes"
+
 
 const docs = prepDocumentsForSearch(NodeTypes, createNode)
 

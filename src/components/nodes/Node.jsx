@@ -1,4 +1,4 @@
-import { NodeTypes } from "nameless-graph-exec"
+import NodeTypes from "../../modules/nodeTypes"
 import { DataType } from "../../dataTypes"
 import NodeInner from "./NodeInner"
 import HandleGroup from "./HandleGroup"
